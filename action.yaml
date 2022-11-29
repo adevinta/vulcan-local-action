@@ -1,0 +1,114 @@
+name: Vulnerability Scanning Action
+description: This action performs security scanning on your code.
+
+inputs:
+
+  local-config:
+    description: Path of the vulcan.yaml file.
+    type: string
+    required: false
+    default: vulcan.yaml
+
+  use-local-config:
+    description: Wether to use local-config file if exists.
+    type: boolean
+    required: false
+    default: true
+
+  log-level:
+    description: Log level
+    type: choice
+    required: false
+    options:
+      - debug
+      - info
+      - warn
+      - error
+
+  report-severity:
+    description: Minimum severity to report
+    type: choice
+    required: false
+    default: LOW
+    options:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
+      - INFO
+
+  # Not implemented yet, current behaviour is NEVER
+  break-severity:
+    description: Minimum severity to break the pipeline
+    type: choice
+    required: false
+    default: NEVER
+    options:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
+      - INFO
+      - NEVER
+
+  scan-repo:
+    description: Wether to scan the local repo path
+    type: boolean
+    default: true
+
+  target-images:
+    description: Space separated list of images to scan.
+    type: string
+    required: false
+
+  target-paths:
+    description: Space separated list of local paths or git repositories scan.
+    type: string
+    required: false
+
+  policies:
+    description: Space separated list of policies to apply
+    type: string
+    required: false
+
+  vulcan-local-version:
+    description: Vulcan local version to use
+    type: string
+    default: v0.2.1
+
+outputs:
+  report:
+    value: ${{ steps.scan.outputs.report }}
+    description: Path to the report file.
+  status:
+    value: ${{ steps.scan.outputs.status }}
+    description: Exit code depending on the vulns detected.
+
+runs:
+  using: composite
+
+  steps:
+    - uses: actions/checkout@v3
+
+    # This could be embedded into run.sh
+    - name: Install vulcan-local
+      shell: bash
+      env:
+        VULCAN_LOCAL_VERSION: ${{ inputs.vulcan-local-version }}
+      run: |
+        curl -sfL https://raw.githubusercontent.com/adevinta/vulcan-local/master/script/get | sh -s -- --version $VULCAN_LOCAL_VERSION
+
+    - name: Scan code
+      shell: bash
+      id: scan
+      env:
+        LOCAL_CONFIG: ${{ inputs.local-config }}
+        USE_LOCAL_CONFIG: ${{ inputs.use-local-config }}
+        LOG_LEVEL: ${{ inputs.log-level }}
+        SCAN_REPO: ${{ inputs.scan-repo }}
+        TARGET_IMAGES: ${{ inputs.target-images }}
+        TARGET_PATHS: ${{ inputs.target-paths }}
+        REPORT_SEVERITY: ${{ inputs.report-severity }}
+        BREAK_SEVERITY: ${{ inputs.break-severity }}
+        POLICIES: ${{ inputs.policies }}
+      run: $GITHUB_ACTION_PATH/run.sh
