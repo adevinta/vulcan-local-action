@@ -67,6 +67,16 @@ inputs:
     type: string
     required: false
 
+  include:
+    description: Regex with the checks to include
+    type: string
+    required: false
+
+  exclude:
+    description: Regex with the checks to exclude
+    type: string
+    required: false
+
   policies:
     description: Space separated list of policies to apply
     type: string
@@ -124,6 +134,8 @@ runs:
         SCAN_REPO: ${{ inputs.scan-repo }}
         TARGET_IMAGES: ${{ inputs.target-images }}
         TARGET_PATHS: ${{ inputs.target-paths }}
+        INCLUDE: ${{ inputs.include }}
+        EXCLUDE: ${{ inputs.exclude }}
         REPORT_SEVERITY: ${{ inputs.report-severity }}
         BREAK_SEVERITY: ${{ inputs.break-severity }}
         POLICIES: ${{ inputs.policies }}

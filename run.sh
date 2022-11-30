@@ -10,6 +10,14 @@ if [ -n "${LOG_LEVEL}" ]; then
     VL_ARGS+=("-l" "${LOG_LEVEL}")
 fi
 
+if [ -n "${INCLUDE}" ]; then
+    VL_ARGS+=("-i" "${INCLUDE}")
+fi
+
+if [ -n "${EXCLUDE}" ]; then
+    VL_ARGS+=("-e" "${EXCLUDE}")
+fi
+
 # Adding images
 if [ -n "${TARGET_IMAGES}" ]; then
     for ELEM in ${TARGET_IMAGES}; do
