@@ -67,5 +67,5 @@ exit_status=0
 echo "vulcan-local ${VL_ARGS[*]}"
 vulcan-local "${VL_ARGS[@]}" || exit_status=$?
 
-echo "::set-output name=report::$OUTPUT_REPORT"
-echo "::set-output name=status::$exit_status"
+echo "report=$OUTPUT_REPORT" >> $GITHUB_OUTPUT
+echo "status=$exit_status" >> $GITHUB_OUTPUT
