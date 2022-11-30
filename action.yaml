@@ -82,7 +82,7 @@ inputs:
     type: string
     required: false
 
-  vulcan-local-version:
+  version:
     description: Vulcan local version to use
     type: string
     default: v0.2.1
@@ -109,10 +109,10 @@ runs:
     - name: Install vulcan-local
       shell: bash
       env:
-        VULCAN_LOCAL_VERSION: ${{ inputs.vulcan-local-version }}
+        VL_VERSION: ${{ inputs.version }}
       run: |
-        # curl -sfL https://raw.githubusercontent.com/adevinta/vulcan-local/master/script/get | sh -s -- --version $VULCAN_LOCAL_VERSION
-        go install github.com/adevinta/vulcan-local@$VULCAN_LOCAL_VERSION
+        # curl -sfL https://raw.githubusercontent.com/adevinta/vulcan-local/master/script/get | sh -s -- --version $VL_VERSION
+        go install "github.com/adevinta/vulcan-local@${VL_VERSION}"
 
     - name: Scan code
       shell: bash
