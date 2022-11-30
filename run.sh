@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Copyright 2022 Adevinta
+
 set -e
 
 VL_ARGS=()
