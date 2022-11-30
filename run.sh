@@ -3,6 +3,7 @@
 set -e
 
 VL_ARGS=()
+VL_HIDDEN_ARGS=()
 
 # Setting log level
 if [ -n "${LOG_LEVEL}" ]; then
@@ -40,7 +41,7 @@ fi
 # Add required variables
 if [ -n "${VARS}" ]; then
     for ELEM in ${VARS}; do
-        VL_ARGS+=("-v" "${ELEM}")
+        VL_HIDDEN_ARGS+=("-v" "${ELEM}")
     done
 fi
 
@@ -65,7 +66,7 @@ VL_ARGS+=("-r" "$OUTPUT_REPORT")
 
 exit_status=0
 echo "vulcan-local ${VL_ARGS[*]}"
-vulcan-local "${VL_ARGS[@]}" || exit_status=$?
+vulcan-local "${VL_ARGS[@]}" "${VL_HIDDEN_ARGS[@]}"|| exit_status=$?
 
 echo "report=$OUTPUT_REPORT" >> $GITHUB_OUTPUT
 echo "status=$exit_status" >> $GITHUB_OUTPUT
