@@ -30,6 +30,20 @@ if [ -n "${POLICIES}" ]; then
     done
 fi
 
+# Add additional configs
+if [ -n "${CONFIGS}" ]; then
+    for ELEM in ${CONFIGS}; do
+        VL_ARGS+=("-c" "${ELEM}")
+    done
+fi
+
+# Add required variables
+if [ -n "${VARS}" ]; then
+    for ELEM in ${VARS}; do
+        VL_ARGS+=("-v" "${ELEM}")
+    done
+fi
+
 if [ -n "${SCAN_REPO}" ]; then
     VL_ARGS+=("-t" "." "-a" "GitRepository")
 fi

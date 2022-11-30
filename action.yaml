@@ -1,5 +1,6 @@
-name: Vulnerability Scanning Action
-description: This action performs security scanning on your code.
+name: Vulnerability scanning with vulcan local.
+description: Scan for vulnerabilities.
+author: Adevinta
 
 inputs:
 
@@ -71,6 +72,16 @@ inputs:
     type: string
     required: false
 
+  configs:
+    description: Space separated list of config files
+    type: string
+    required: false
+
+  vars:
+    description: Space separated list of variables
+    type: string
+    required: false
+
   vulcan-local-version:
     description: Vulcan local version to use
     type: string
@@ -90,13 +101,18 @@ runs:
   steps:
     - uses: actions/checkout@v3
 
+    - uses: actions/setup-go@v3
+      with:
+        go-version: '1.19'
+
     # This could be embedded into run.sh
     - name: Install vulcan-local
       shell: bash
       env:
         VULCAN_LOCAL_VERSION: ${{ inputs.vulcan-local-version }}
       run: |
-        curl -sfL https://raw.githubusercontent.com/adevinta/vulcan-local/master/script/get | sh -s -- --version $VULCAN_LOCAL_VERSION
+        # curl -sfL https://raw.githubusercontent.com/adevinta/vulcan-local/master/script/get | sh -s -- --version $VULCAN_LOCAL_VERSION
+        go install github.com/adevinta/vulcan-local@$VULCAN_LOCAL_VERSION
 
     - name: Scan code
       shell: bash
@@ -111,4 +127,6 @@ runs:
         REPORT_SEVERITY: ${{ inputs.report-severity }}
         BREAK_SEVERITY: ${{ inputs.break-severity }}
         POLICIES: ${{ inputs.policies }}
+        CONFIGS: ${{ inputs.configs }}
+        VARS: ${{ inputs.vars }}
       run: $GITHUB_ACTION_PATH/run.sh
