@@ -19,6 +19,7 @@ inputs:
   log-level:
     description: Log level
     type: choice
+    default: info
     required: false
     options:
       - debug
@@ -53,7 +54,7 @@ inputs:
       - NEVER
 
   scan-repo:
-    description: Wether to scan the local repo path
+    description: Whether to scan the local repo path
     type: boolean
     default: true
 

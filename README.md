@@ -25,8 +25,8 @@ jobs:
 
 Scans local repository with default checks:
 
-- Perform static analusis over the current repository. See  `scan-repo` option.
-- Applies configs in `vulcan.yaml` if they exists in the root of the repo. See `local-config` and `use-local-config` options..
+- Perform static analysis over the current repository. See  `scan-repo` option.
+- Applies configs in `vulcan.yaml` if it exists in the root of the repo. See `local-config` and `use-local-config` options.
 
 ### Scan repository AND container images
 
@@ -56,7 +56,6 @@ Scans local repository with default checks:
 - Builds the image
 - Performs the same scanning as the previous example.
 - Scans the image for vulnerabilities.
-
 
 ### Scan private images
 
