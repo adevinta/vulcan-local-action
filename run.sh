@@ -21,39 +21,34 @@ if [ -n "${EXCLUDE}" ]; then
 fi
 
 # Adding images
-if [ -n "${TARGET_IMAGES}" ]; then
-    for ELEM in ${TARGET_IMAGES}; do
-        VL_ARGS+=("-t" "${ELEM}" "-a" "DockerImage")
-    done
-fi
+for ELEM in ${TARGET_IMAGES}; do
+    VL_ARGS+=("-t" "${ELEM}" "-a" "DockerImage")
+done
 
 # Scan paths as GitRepository
-if [ -n "${TARGET_PATHS}" ]; then
-    for ELEM in ${TARGET_PATHS}; do
-        VL_ARGS+=("-t" "${ELEM}" "-a" "GitRepository")
-    done
-fi
+for ELEM in ${TARGET_PATHS}; do
+    VL_ARGS+=("-t" "${ELEM}" "-a" "GitRepository")
+done
 
 # Add policies
-if [ -n "${POLICIES}" ]; then
-    for ELEM in ${POLICIES}; do
-        VL_ARGS+=("-p" "${ELEM}")
-    done
-fi
+for ELEM in ${POLICIES}; do
+    VL_ARGS+=("-p" "${ELEM}")
+done
 
 # Add additional configs
-if [ -n "${CONFIGS}" ]; then
-    for ELEM in ${CONFIGS}; do
-        VL_ARGS+=("-c" "${ELEM}")
-    done
-fi
+for ELEM in ${CONFIGS}; do
+    VL_ARGS+=("-c" "${ELEM}")
+done
+
+# Add additional configs
+for ELEM in ${CHECKTYPES}; do
+    VL_ARGS+=("-checktypes" "${ELEM}")
+done
 
 # Add required variables
-if [ -n "${VARS}" ]; then
-    for ELEM in ${VARS}; do
-        VL_HIDDEN_ARGS+=("-v" "${ELEM}")
-    done
-fi
+for ELEM in ${VARS}; do
+    VL_HIDDEN_ARGS+=("-v" "${ELEM}")
+done
 
 if [ -n "${SCAN_REPO}" ]; then
     VL_ARGS+=("-t" "." "-a" "GitRepository")

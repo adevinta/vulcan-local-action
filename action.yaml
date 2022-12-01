@@ -82,6 +82,11 @@ inputs:
     type: string
     required: false
 
+  checktypes:
+    description: Space separated list of urls or paths to checktypes
+    type: string
+    required: false
+
   configs:
     description: Space separated list of config files
     type: string
@@ -139,6 +144,7 @@ runs:
         REPORT_SEVERITY: ${{ inputs.report-severity }}
         BREAK_SEVERITY: ${{ inputs.break-severity }}
         POLICIES: ${{ inputs.policies }}
+        CHECKTYPES: ${{ inputs.checktypes }}
         CONFIGS: ${{ inputs.configs }}
         VARS: ${{ inputs.vars }}
       run: $GITHUB_ACTION_PATH/run.sh
