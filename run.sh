@@ -78,21 +78,27 @@ echo "report=$OUTPUT_REPORT" >> $GITHUB_OUTPUT
 echo "status=$exit_status" >> $GITHUB_OUTPUT
 
 # In case of error vulcan-local exits with 1, and in this case here we hide it.
+break=0
 case $BREAK_SEVERITY in 
     CRITICAL)
-        if [ $exit_status -ge 104 ]; then exit 1; fi
+        if [ $exit_status -ge 104 ]; then break=1; fi
         ;;
     HIGH)
-        if [ $exit_status -ge 103 ]; then exit 1; fi
+        if [ $exit_status -ge 103 ]; then break=1; fi
         ;;
     MEDIUM)
-        if [ $exit_status -ge 102 ]; then exit 1; fi
+        if [ $exit_status -ge 102 ]; then break=1; fi
         ;;
     LOW)
-        if [ $exit_status -ge 101 ]; then exit 1; fi
+        if [ $exit_status -ge 101 ]; then break=1; fi
         ;;
     NEVER)
         ;;
     *)
         echo "invalid break-severity: $BREAK_SEVERITY"
 esac
+
+if [ $break == 1 ]; then
+    echo "Failing because of findings higher/equal than $BREAK_SEVERITY"
+    exit 1
+fi
