@@ -76,6 +76,7 @@ vulcan-local "${VL_ARGS[@]}" "${VL_HIDDEN_ARGS[@]}" || exit_status=$?
 echo "report=$OUTPUT_REPORT" >> $GITHUB_OUTPUT
 echo "status=$exit_status" >> $GITHUB_OUTPUT
 
+echo "Pricessing exit_status=$exit_status with break-severity=$BREAK_SEVERITY"
 case $BREAK_SEVERITY in 
     CRITICAL)
         [ $exit_status -ge 104 ] && exit 1
