@@ -72,11 +72,12 @@ VL_ARGS+=("-r" "$OUTPUT_REPORT")
 exit_status=0
 echo "vulcan-local ${VL_ARGS[*]}"
 vulcan-local "${VL_ARGS[@]}" "${VL_HIDDEN_ARGS[@]}" || exit_status=$?
+echo "exit_status=$exit_status"
 
 echo "report=$OUTPUT_REPORT" >> $GITHUB_OUTPUT
 echo "status=$exit_status" >> $GITHUB_OUTPUT
 
-echo "Pricessing exit_status=$exit_status with break-severity=$BREAK_SEVERITY"
+# In case of error vulcan-local exits with 1, and in this case here we hide it.
 case $BREAK_SEVERITY in 
     CRITICAL)
         if [ $exit_status -ge 104 ]; then exit 1; fi
