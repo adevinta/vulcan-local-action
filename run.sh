@@ -89,4 +89,8 @@ case $BREAK_SEVERITY in
     LOW)
         [ $exit_status -ge 101 ] && exit 1
         ;;
+    NEVER)
+        ;;
+    *)
+        echo "invalid break-severity: $BREAK_SEVERITY"
 esac
