@@ -1,0 +1,152 @@
+name: Vulnerability scanning with vulcan local
+description: Scan for vulnerabilities
+author: Adevinta
+
+inputs:
+
+  local-config:
+    description: Path of the vulcan.yaml file
+    type: string
+    required: false
+    default: vulcan.yaml
+
+  use-local-config:
+    description: Whether to use local-config file if exists
+    type: boolean
+    required: false
+    default: true
+
+  log-level:
+    description: Log level
+    type: choice
+    default: info
+    required: false
+    options:
+      - debug
+      - info
+      - warn
+      - error
+
+  report-severity:
+    description: Minimum severity to report
+    type: choice
+    required: false
+    default: LOW
+    options:
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
+      - INFO
+
+  break-severity:
+    description: Minimum severity to break the pipeline
+    type: choice
+    required: false
+    default: NEVER
+    options:
+      - NEVER
+      - CRITICAL
+      - HIGH
+      - MEDIUM
+      - LOW
+
+  scan-repo:
+    description: Whether to scan the local repo path
+    type: boolean
+    default: true
+
+  target-images:
+    description: Space separated list of images to scan
+    type: string
+    required: false
+
+  target-paths:
+    description: Space separated list of local paths or git repositories scan
+    type: string
+    required: false
+
+  include:
+    description: Regex with the checks to include
+    type: string
+    required: false
+
+  exclude:
+    description: Regex with the checks to exclude
+    type: string
+    required: false
+
+  policies:
+    description: Space separated list of policies to apply
+    type: string
+    required: false
+
+  checktypes:
+    description: Space separated list of urls or paths to checktypes
+    type: string
+    required: false
+
+  configs:
+    description: Space separated list of config files
+    type: string
+    required: false
+
+  vars:
+    description: Space separated list of variables
+    type: string
+    required: false
+
+  version:
+    description: Vulcan local version to use
+    type: string
+    default: v0.2.2
+
+outputs:
+  report:
+    value: ${{ steps.scan.outputs.report }}
+    description: Path to the report file
+  status:
+    value: ${{ steps.scan.outputs.status }}
+    description: Exit code depending on the vulns detected
+
+runs:
+  using: composite
+
+  steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-go@v3
+      with:
+        go-version: '1.19'
+
+    # This could be embedded into run.sh
+    - name: Install vulcan-local
+      shell: bash
+      env:
+        VL_VERSION: ${{ inputs.version }}
+      run: |
+        VL_VERSION=${VL_VERSION:-v0.2.2}
+        if [[ $VL_VERSION =~ ^v(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))?(\.(0|[1-9][0-9]*))?(-((0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?$ ]]; then
+          curl -sfL https://raw.githubusercontent.com/adevinta/vulcan-local/master/script/get | sh -s -- --version $VL_VERSION
+        else
+          go install "github.com/adevinta/vulcan-local@${VL_VERSION}"
+        fi
+    - name: Scan code
+      shell: bash
+      id: scan
+      env:
+        LOCAL_CONFIG: ${{ inputs.local-config }}
+        USE_LOCAL_CONFIG: ${{ inputs.use-local-config }}
+        LOG_LEVEL: ${{ inputs.log-level }}
+        SCAN_REPO: ${{ inputs.scan-repo }}
+        TARGET_IMAGES: ${{ inputs.target-images }}
+        TARGET_PATHS: ${{ inputs.target-paths }}
+        INCLUDE: ${{ inputs.include }}
+        EXCLUDE: ${{ inputs.exclude }}
+        REPORT_SEVERITY: ${{ inputs.report-severity }}
+        BREAK_SEVERITY: ${{ inputs.break-severity }}
+        POLICIES: ${{ inputs.policies }}
+        CHECKTYPES: ${{ inputs.checktypes }}
+        CONFIGS: ${{ inputs.configs }}
+        VARS: ${{ inputs.vars }}
+      run: $GITHUB_ACTION_PATH/run.sh
