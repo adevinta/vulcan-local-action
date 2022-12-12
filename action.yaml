@@ -39,19 +39,17 @@ inputs:
       - LOW
       - INFO
 
-  # Not implemented yet, current behaviour is NEVER
   break-severity:
     description: Minimum severity to break the pipeline
     type: choice
     required: false
     default: NEVER
     options:
+      - NEVER
       - CRITICAL
       - HIGH
       - MEDIUM
       - LOW
-      - INFO
-      - NEVER
 
   scan-repo:
     description: Whether to scan the local repo path

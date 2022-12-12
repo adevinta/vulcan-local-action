@@ -71,7 +71,22 @@ VL_ARGS+=("-r" "$OUTPUT_REPORT")
 
 exit_status=0
 echo "vulcan-local ${VL_ARGS[*]}"
-vulcan-local "${VL_ARGS[@]}" "${VL_HIDDEN_ARGS[@]}"|| exit_status=$?
+vulcan-local "${VL_ARGS[@]}" "${VL_HIDDEN_ARGS[@]}" || exit_status=$?
 
 echo "report=$OUTPUT_REPORT" >> $GITHUB_OUTPUT
 echo "status=$exit_status" >> $GITHUB_OUTPUT
+
+case $BREAK_SEVERITY in 
+    CRITICAL)
+        [ $exit_status -ge 104 ] && exit 1
+        ;;
+    HIGH)
+        [ $exit_status -ge 103 ] && exit 1
+        ;;
+    MEDIUM)
+        [ $exit_status -ge 102 ] && exit 1
+        ;;
+    LOW)
+        [ $exit_status -ge 101 ] && exit 1
+        ;;
+esac
