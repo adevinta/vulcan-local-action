@@ -79,16 +79,16 @@ echo "status=$exit_status" >> $GITHUB_OUTPUT
 echo "Pricessing exit_status=$exit_status with break-severity=$BREAK_SEVERITY"
 case $BREAK_SEVERITY in 
     CRITICAL)
-        [ $exit_status -ge 104 ] && exit 1
+        if [ $exit_status -ge 104 ]; then exit 1; fi
         ;;
     HIGH)
-        [ $exit_status -ge 103 ] && exit 1
+        if [ $exit_status -ge 103 ]; then exit 1; fi
         ;;
     MEDIUM)
-        [ $exit_status -ge 102 ] && exit 1
+        if [ $exit_status -ge 102 ]; then exit 1; fi
         ;;
     LOW)
-        [ $exit_status -ge 101 ] && exit 1
+        if [ $exit_status -ge 101 ]; then exit 1; fi
         ;;
     NEVER)
         ;;
