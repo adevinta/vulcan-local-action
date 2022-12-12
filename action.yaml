@@ -1,17 +1,17 @@
-name: Vulnerability scanning with vulcan local.
-description: Scan for vulnerabilities.
+name: Vulnerability scanning with vulcan local
+description: Scan for vulnerabilities
 author: Adevinta
 
 inputs:
 
   local-config:
-    description: Path of the vulcan.yaml file.
+    description: Path of the vulcan.yaml file
     type: string
     required: false
     default: vulcan.yaml
 
   use-local-config:
-    description: Wether to use local-config file if exists.
+    description: Whether to use local-config file if exists
     type: boolean
     required: false
     default: true
@@ -57,12 +57,12 @@ inputs:
     default: true
 
   target-images:
-    description: Space separated list of images to scan.
+    description: Space separated list of images to scan
     type: string
     required: false
 
   target-paths:
-    description: Space separated list of local paths or git repositories scan.
+    description: Space separated list of local paths or git repositories scan
     type: string
     required: false
 
@@ -104,10 +104,10 @@ inputs:
 outputs:
   report:
     value: ${{ steps.scan.outputs.report }}
-    description: Path to the report file.
+    description: Path to the report file
   status:
     value: ${{ steps.scan.outputs.status }}
-    description: Exit code depending on the vulns detected.
+    description: Exit code depending on the vulns detected
 
 runs:
   using: composite
