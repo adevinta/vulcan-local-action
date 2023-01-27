@@ -1,25 +1,20 @@
 # Vulcan Local Action
 
-
 > [GitHub Action](https://github.com/features/actions) for [vulcan-local](https://github.com/adevinta/vulcan-local)
-
 
 ## Usage
 
 ### Scan CI Pipeline
 
 ```yaml
-name: build
+name: Build
 on:
   push:
-    branches:
-      - master
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Scan with vulcan-local.
+      - name: Scan with vulcan-local
         uses: adevinta/vulcan-local-action@master
 ```
 
@@ -31,20 +26,20 @@ Scans local repository with default checks:
 ### Scan repository AND container images
 
 ```yaml
-name: build
+name: Build
 on:
   push:
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Build an image from Dockerfile
+        id: build
         run: |
           docker build . -t my-image:dev
           echo "image=my-image:dev" >> $GITHUB_OUTPUT
-      - name: Scan with vulcan-local.
+      - name: Scan with vulcan-local
         uses: adevinta/vulcan-local-action@master
         with:
           target-images: ${{ steps.build.outputs.image }}
@@ -66,11 +61,10 @@ on:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Scan with vulcan-local.
+      - name: Scan with vulcan-local
         uses: adevinta/vulcan-local-action@master
         with:
           target-images: docker.io/mysuer/image:tag
