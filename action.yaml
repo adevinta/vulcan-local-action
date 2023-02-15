@@ -96,6 +96,11 @@ inputs:
     type: string
     required: false
 
+  extra-args:
+    description: Extra args to append to vulcan-local
+    type: string
+    required: false
+
   version:
     description: Vulcan local version to use
     type: string
@@ -149,4 +154,5 @@ runs:
         CHECKTYPES: ${{ inputs.checktypes }}
         CONFIGS: ${{ inputs.configs }}
         VARS: ${{ inputs.vars }}
+        EXTRA_ARGS: ${{ inputs.extra-args}}
       run: $GITHUB_ACTION_PATH/run.sh

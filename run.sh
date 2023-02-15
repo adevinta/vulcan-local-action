@@ -64,6 +64,10 @@ if [ "${USE_LOCAL_CONFIG}" == "true" ]; then
     fi
 fi
 
+for ELEM in ${EXTRA_ARGS}; do
+    VL_ARGS+=("${ELEM}")
+done
+
 # Create a temp directory for the report
 TMPD=$(mktemp -d)
 OUTPUT_REPORT="$TMPD/report.json"
