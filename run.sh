@@ -50,7 +50,7 @@ for ELEM in ${VARS}; do
     VL_HIDDEN_ARGS+=("-v" "${ELEM}")
 done
 
-if [ -n "${SCAN_REPO}" ]; then
+if [ "${SCAN_REPO}" == "true" ]; then
     VL_ARGS+=("-t" "." "-a" "GitRepository")
 fi
 
