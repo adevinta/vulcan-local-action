@@ -104,7 +104,7 @@ inputs:
   version:
     description: Vulcan local version to use
     type: string
-    default: v0.2.5
+    default: v0.2.7
 
 outputs:
   report:
