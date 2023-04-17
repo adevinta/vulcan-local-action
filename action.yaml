@@ -51,11 +51,6 @@ inputs:
       - MEDIUM
       - LOW
 
-  scan-repo:
-    description: Whether to scan the local repo path
-    type: boolean
-    default: true
-
   target-images:
     description: Space separated list of images to scan
     type: string
@@ -143,7 +138,6 @@ runs:
         LOCAL_CONFIG: ${{ inputs.local-config }}
         USE_LOCAL_CONFIG: ${{ inputs.use-local-config }}
         LOG_LEVEL: ${{ inputs.log-level }}
-        SCAN_REPO: ${{ inputs.scan-repo }}
         TARGET_IMAGES: ${{ inputs.target-images }}
         TARGET_PATHS: ${{ inputs.target-paths }}
         INCLUDE: ${{ inputs.include }}
