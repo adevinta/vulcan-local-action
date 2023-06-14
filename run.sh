@@ -74,8 +74,8 @@ echo "vulcan-local ${VL_ARGS[*]}"
 vulcan-local "${VL_ARGS[@]}" "${VL_HIDDEN_ARGS[@]}" || exit_status=$?
 echo "exit_status=$exit_status"
 
-echo "report=$OUTPUT_REPORT" >> $GITHUB_OUTPUT
-echo "status=$exit_status" >> $GITHUB_OUTPUT
+echo "report=$OUTPUT_REPORT" >> "$GITHUB_OUTPUT"
+echo "status=$exit_status" >> "$GITHUB_OUTPUT"
 
 # In case of error vulcan-local exits with 1, and in this case here we hide it.
 break=0
