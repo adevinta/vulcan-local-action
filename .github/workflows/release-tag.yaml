@@ -6,7 +6,7 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
   tag:
-    runs-on: size/small
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: vweevers/additional-tags-action@v2
